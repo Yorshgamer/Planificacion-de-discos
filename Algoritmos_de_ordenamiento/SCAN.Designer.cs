@@ -41,9 +41,9 @@
             this.btnAGREGAR = new System.Windows.Forms.Button();
             this.richTextBoxSCAN = new System.Windows.Forms.RichTextBox();
             this.tbl_SCAN = new System.Windows.Forms.DataGridView();
+            this.btnSalir = new System.Windows.Forms.Button();
             this.Numero_de_Pista = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.num_pist_atravesadas = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnSalir = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.tbl_SCAN)).BeginInit();
             this.SuspendLayout();
             // 
@@ -166,20 +166,6 @@
             this.tbl_SCAN.Size = new System.Drawing.Size(400, 233);
             this.tbl_SCAN.TabIndex = 14;
             // 
-            // Numero_de_Pista
-            // 
-            this.Numero_de_Pista.HeaderText = "Proxima Pista";
-            this.Numero_de_Pista.MinimumWidth = 6;
-            this.Numero_de_Pista.Name = "Numero_de_Pista";
-            this.Numero_de_Pista.Width = 125;
-            // 
-            // num_pist_atravesadas
-            // 
-            this.num_pist_atravesadas.HeaderText = "Numero de Pistas Atravesadas";
-            this.num_pist_atravesadas.MinimumWidth = 6;
-            this.num_pist_atravesadas.Name = "num_pist_atravesadas";
-            this.num_pist_atravesadas.Width = 125;
-            // 
             // btnSalir
             // 
             this.btnSalir.Location = new System.Drawing.Point(14, 398);
@@ -189,6 +175,21 @@
             this.btnSalir.Text = "SALIR";
             this.btnSalir.UseVisualStyleBackColor = true;
             this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
+            // 
+            // Numero_de_Pista
+            // 
+            this.Numero_de_Pista.HeaderText = "Proxima Pista";
+            this.Numero_de_Pista.MinimumWidth = 6;
+            this.Numero_de_Pista.Name = "Numero_de_Pista";
+            this.Numero_de_Pista.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            this.Numero_de_Pista.Width = 125;
+            // 
+            // num_pist_atravesadas
+            // 
+            this.num_pist_atravesadas.HeaderText = "Numero de Pistas Atravesadas";
+            this.num_pist_atravesadas.MinimumWidth = 6;
+            this.num_pist_atravesadas.Name = "num_pist_atravesadas";
+            this.num_pist_atravesadas.Width = 125;
             // 
             // SCAN
             // 
@@ -229,8 +230,8 @@
         private System.Windows.Forms.Button btnAGREGAR;
         private System.Windows.Forms.RichTextBox richTextBoxSCAN;
         private System.Windows.Forms.DataGridView tbl_SCAN;
+        private System.Windows.Forms.Button btnSalir;
         private System.Windows.Forms.DataGridViewTextBoxColumn Numero_de_Pista;
         private System.Windows.Forms.DataGridViewTextBoxColumn num_pist_atravesadas;
-        private System.Windows.Forms.Button btnSalir;
     }
 }

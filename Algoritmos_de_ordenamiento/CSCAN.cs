@@ -11,11 +11,15 @@ using ZedGraph;
 
 namespace Algoritmos_de_ordenamiento
 {
-    
     public partial class CSCAN : Form
     {
         private string datosCSCAN;
         private bool btnAgregarLayout = false;
+        public string PromedioFIFO
+        {
+            get { return lblPROM.Text; }
+            set { lblPROM.Text = value; }
+        }
         public CSCAN(string datos, string valorLblInicio2, string valorLblCantDatos, string valorLblCapacidad)
         {
             InitializeComponent();
@@ -44,6 +48,7 @@ namespace Algoritmos_de_ordenamiento
 
         private void btnOUT_Click(object sender, EventArgs e)
         {
+            PromedioFIFO = lblPROM.Text;
             this.Close();
         }
 
@@ -53,47 +58,29 @@ namespace Algoritmos_de_ordenamiento
             {
                 if (!string.IsNullOrEmpty(richTextBoxCSCAN.Text))
                 {
-                    string[] lineas = richTextBoxCSCAN.Lines;
+                    List<int> datos = richTextBoxCSCAN.Lines
+                        .Where(linea => !string.IsNullOrWhiteSpace(linea))
+                        .Select(linea => Convert.ToInt32(linea.Trim()))
+                        .ToList();
 
-                    for (int i = 0; i < lineas.Length; i++)
-                    {
-                        if (!string.IsNullOrWhiteSpace(lineas[i]))
-                        {
-                            tbl_CSCAN.Rows.Add(lineas[i].Trim());
+                    // Agregar el valor de lblCapacidad
+                    datos.Add(Convert.ToInt32(lblCapacidad.Text));
 
-                            if (i == 0)
-                            {
-                                int valorAnterior = Convert.ToInt32(lbldatosant.Text);
-                                int valorActual = Convert.ToInt32(lineas[i].Trim());
-                                int diferencia = Math.Abs(valorActual - valorAnterior);
+                    // Ordenar utilizando CSCAN
+                    int cabeza = Convert.ToInt32(lbldatosant.Text);
+                    int capacidad = Convert.ToInt32(lblCapacidad.Text);
+                    List<int> datosCSCAN = OrdenarCSCAN(datos, capacidad);
 
-                                tbl_CSCAN.Rows[i].Cells[1].Value = diferencia.ToString();
-                            }
-                            else if (i > 0)
-                            {
-                                int valorAnterior = Convert.ToInt32(tbl_CSCAN.Rows[i - 1].Cells[0].Value);
-                                int valorActual = Convert.ToInt32(lineas[i].Trim());
-                                int diferencia = Math.Abs(valorActual - valorAnterior);
-
-                                tbl_CSCAN.Rows[i].Cells[1].Value = diferencia.ToString();
-                            }
-                        }
-                    }
+                    // Mostrar datos en DataGridView
+                    MostrarDatosEnDataGridView(datosCSCAN);
 
                     ConfigurarZedGraph();
 
                     // Calcular la suma de la segunda columna
-                    int suma = 0;
-                    foreach (DataGridViewRow row in tbl_CSCAN.Rows)
-                    {
-                        if (row.Cells[1].Value != null)
-                        {
-                            suma += Convert.ToInt32(row.Cells[1].Value);
-                        }
-                    }
+                    int suma = datosCSCAN.Sum();
 
                     // Obtener el valor del label lbl_CantDatos
-                    int cantDatos = Convert.ToInt32(lblCantDatos.Text);
+                    int cantDatos = datosCSCAN.Count;
 
                     // Calcular el promedio
                     if (cantDatos > 0)
@@ -120,6 +107,59 @@ namespace Algoritmos_de_ordenamiento
                 }
             }
         }
+
+        private List<int> OrdenarCSCAN(List<int> datos, int capacidad)
+        {
+            // Agregar el valor de lbldatosant a la lista
+            datos.Add(Convert.ToInt32(lbldatosant.Text));
+
+            List<int> ordenados = datos.OrderBy(d => d).ToList();
+
+            // Obtener el índice de lbldatosant en la lista ordenada
+            int index = ordenados.IndexOf(Convert.ToInt32(lbldatosant.Text));
+
+            List<int> cscanOrdenados = new List<int>();
+
+            // Moverse hacia la derecha desde lbldatosant hasta el final
+            for (int i = index + 1; i < ordenados.Count; i++)
+            {
+                cscanOrdenados.Add(ordenados[i]);
+            }
+
+            // Volver al principio y continuar hacia la izquierda hasta lbldatosant
+            for (int i = 0; i <= index; i++)
+            {
+                cscanOrdenados.Add(ordenados[i]);
+            }
+
+            // Si lbldatosant estaba al principio, agregar el valor de capacidad como tope
+            if (index == 0)
+            {
+                cscanOrdenados.Add(capacidad);
+            }
+
+            return cscanOrdenados;
+        }
+
+        private void MostrarDatosEnDataGridView(List<int> datos)
+        {
+            tbl_CSCAN.Rows.Clear();
+
+            for (int i = 0; i < datos.Count; i++)
+            {
+                if (i == 0)
+                {
+                    // Para la primera fila, usa el valor absoluto de la resta entre datos[i] y lbldatosant
+                    tbl_CSCAN.Rows.Add(datos[i], Math.Abs(datos[i] - Convert.ToInt32(lbldatosant.Text)));
+                }
+                else
+                {
+                    int valorAnterior = datos[i - 1];
+                    tbl_CSCAN.Rows.Add(datos[i], Math.Abs(valorAnterior - datos[i]));
+                }
+            }
+        }
+
         private void ConfigurarZedGraph()
         {
             // Obtener el valor de la capacidad y la cantidad de datos
@@ -130,7 +170,7 @@ namespace Algoritmos_de_ordenamiento
             zedG_CSCAN.GraphPane.CurveList.Clear();
 
             // Configurar título y ejes
-            zedG_CSCAN.GraphPane.Title.Text = "ORDENAMIENTO FIFO";
+            zedG_CSCAN.GraphPane.Title.Text = "ORDENAMIENTO CSCAN";
             zedG_CSCAN.GraphPane.XAxis.Title.Text = "PASOS";
             zedG_CSCAN.GraphPane.YAxis.Title.Text = "Posicion del cabezal";
 
@@ -140,7 +180,7 @@ namespace Algoritmos_de_ordenamiento
             zedG_CSCAN.GraphPane.YAxis.Scale.MajorStep = 10;
 
             // Configurar intervalo y máximo para el eje X
-            zedG_CSCAN.GraphPane.XAxis.Scale.Max = cantDatos;
+            zedG_CSCAN.GraphPane.XAxis.Scale.Max = cantDatos+2;
             zedG_CSCAN.GraphPane.XAxis.Scale.Min = 0;
             zedG_CSCAN.GraphPane.XAxis.Scale.MajorStep = 1;
 
@@ -164,7 +204,7 @@ namespace Algoritmos_de_ordenamiento
             }
 
             // Crear una curva para los puntos y agregarla al ZedGraph
-            LineItem myCurve = zedG_CSCAN.GraphPane.AddCurve("FIFO", pointList, Color.Blue, SymbolType.Circle);
+            LineItem myCurve = zedG_CSCAN.GraphPane.AddCurve("CSCAN", pointList, Color.Blue, SymbolType.Circle);
 
             // Personalizar la apariencia de los puntos
             myCurve.Symbol.Fill = new Fill(Color.Blue);

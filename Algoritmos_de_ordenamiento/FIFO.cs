@@ -15,6 +15,12 @@ namespace Algoritmos_de_ordenamiento
     {
         private string datosFIFO;
         private bool btnAgregarLayout = false;
+        public string PromedioFIFO
+        {
+            get { return lblPROM.Text; }
+            set { lblPROM.Text = value; }
+        }
+
         public FIFO(string datos, string valorLblInicio2, string valorLblCantDatos, string valorLblCapacidad)
         {
             InitializeComponent();
@@ -24,7 +30,7 @@ namespace Algoritmos_de_ordenamiento
             lblCapacidad.Text = valorLblCapacidad;
             
         }
-       
+        
         private void MostrarDatosEnRichTextBox(string datos)
         {
             if (datos.EndsWith(","))
@@ -44,7 +50,10 @@ namespace Algoritmos_de_ordenamiento
 
         private void btnOUT_Click(object sender, EventArgs e)
         {
+
+            PromedioFIFO = lblPROM.Text; 
             this.Close();
+
         }
         private void btnAGREGAR_Click_1(object sender, EventArgs e)
         {
@@ -112,6 +121,7 @@ namespace Algoritmos_de_ordenamiento
 
                     // Actualizar la variable de diseño del botón
                     btnAgregarLayout = true;
+
                 }
                 else
                 {

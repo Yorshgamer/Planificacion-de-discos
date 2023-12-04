@@ -15,6 +15,11 @@ namespace Algoritmos_de_ordenamiento
     {
         private string datosLOOK;
         private bool btnAgregarLayout = false;
+        public string PromedioFIFO
+        {
+            get { return lblPROM.Text; }
+            set { lblPROM.Text = value; }
+        }
         public LOOK(string datos, string valorLblInicio2, string valorLblCantDatos, string valorLblCapacidad)
         {
             InitializeComponent();
@@ -26,6 +31,7 @@ namespace Algoritmos_de_ordenamiento
 
         private void btnOUT_Click(object sender, EventArgs e)
         {
+            PromedioFIFO = lblPROM.Text;
             this.Close();
         }
 
@@ -54,32 +60,73 @@ namespace Algoritmos_de_ordenamiento
                 {
                     string[] lineas = richTextBoxLOOK.Lines;
 
-                    for (int i = 0; i < lineas.Length; i++)
+                    List<int> datosAscendentes = new List<int>();
+                    List<int> datosDescendentes = new List<int>();
+
+                    foreach (string linea in lineas)
                     {
-                        if (!string.IsNullOrWhiteSpace(lineas[i]))
+                        if (!string.IsNullOrWhiteSpace(linea))
                         {
-                            tbl_LOOK.Rows.Add(lineas[i].Trim());
+                            int valorDato = Convert.ToInt32(linea.Trim());
 
-                            if (i == 0)
+                            if (valorDato >= Convert.ToInt32(lbldatosant.Text))
                             {
-                                int valorAnterior = Convert.ToInt32(lbldatosant.Text);
-                                int valorActual = Convert.ToInt32(lineas[i].Trim());
-                                int diferencia = Math.Abs(valorActual - valorAnterior);
-
-                                tbl_LOOK.Rows[i].Cells[1].Value = diferencia.ToString();
+                                datosAscendentes.Add(valorDato);
                             }
-                            else if (i > 0)
+                            else
                             {
-                                int valorAnterior = Convert.ToInt32(tbl_LOOK.Rows[i - 1].Cells[0].Value);
-                                int valorActual = Convert.ToInt32(lineas[i].Trim());
-                                int diferencia = Math.Abs(valorActual - valorAnterior);
-
-                                tbl_LOOK.Rows[i].Cells[1].Value = diferencia.ToString();
+                                datosDescendentes.Add(valorDato);
                             }
                         }
                     }
 
-                    ConfigurarZedGraph();
+                    // Ordenar datos ascendentes y descendentes
+                    datosAscendentes.Sort();
+                    datosDescendentes.Sort((a, b) => b.CompareTo(a));
+
+                    tbl_LOOK.Rows.Clear(); // Limpiar filas existentes
+
+                    // Agregar datos ascendentes a la tabla y calcular diferencias
+                    int rowIndex = 0;
+                    foreach (int datoAscendente in datosAscendentes)
+                    {
+                        tbl_LOOK.Rows.Add(datoAscendente, ""); // Agregar dato a la primera columna y dejar la segunda columna en blanco
+
+                        if (rowIndex == 0)
+                        {
+                            int valorAnterior = Convert.ToInt32(lbldatosant.Text);
+                            int valorActual = datoAscendente;
+                            int diferencia = Math.Abs(valorActual - valorAnterior);
+
+                            tbl_LOOK.Rows[rowIndex].Cells[1].Value = diferencia.ToString();
+                        }
+                        else
+                        {
+                            int valorAnterior = Convert.ToInt32(tbl_LOOK.Rows[rowIndex - 1].Cells[0].Value);
+                            int valorActual = datoAscendente;
+                            int diferencia = Math.Abs(valorActual - valorAnterior);
+
+                            tbl_LOOK.Rows[rowIndex].Cells[1].Value = diferencia.ToString();
+                        }
+
+                        rowIndex++;
+                    }
+
+                    // Agregar datos descendentes a la tabla y calcular diferencias
+                    foreach (int datoDescendente in datosDescendentes)
+                    {
+                        tbl_LOOK.Rows.Add(datoDescendente, ""); // Agregar dato a la primera columna y dejar la segunda columna en blanco
+
+                        int valorAnterior = Convert.ToInt32(tbl_LOOK.Rows[rowIndex - 1].Cells[0].Value);
+                        int valorActual = datoDescendente;
+                        int diferencia = Math.Abs(valorActual - valorAnterior);
+
+                        tbl_LOOK.Rows[rowIndex].Cells[1].Value = diferencia.ToString();
+
+                        rowIndex++;
+                    }
+
+                    ConfigurarZedGraph(); // Llamar a la función para actualizar el gráfico
 
                     // Calcular la suma de la segunda columna
                     int suma = 0;
@@ -129,7 +176,7 @@ namespace Algoritmos_de_ordenamiento
             zedG_LOOK.GraphPane.CurveList.Clear();
 
             // Configurar título y ejes
-            zedG_LOOK.GraphPane.Title.Text = "ORDENAMIENTO FIFO";
+            zedG_LOOK.GraphPane.Title.Text = "ORDENAMIENTO LOOK";
             zedG_LOOK.GraphPane.XAxis.Title.Text = "PASOS";
             zedG_LOOK.GraphPane.YAxis.Title.Text = "Posicion del cabezal";
 
@@ -163,7 +210,7 @@ namespace Algoritmos_de_ordenamiento
             }
 
             // Crear una curva para los puntos y agregarla al ZedGraph
-            LineItem myCurve = zedG_LOOK.GraphPane.AddCurve("FIFO", pointList, Color.Blue, SymbolType.Circle);
+            LineItem myCurve = zedG_LOOK.GraphPane.AddCurve("LOOK", pointList, Color.Blue, SymbolType.Circle);
 
             // Personalizar la apariencia de los puntos
             myCurve.Symbol.Fill = new Fill(Color.Blue);

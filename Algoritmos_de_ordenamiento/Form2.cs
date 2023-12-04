@@ -48,6 +48,7 @@ namespace Algoritmos_de_ordenamiento
             lblCantDatos.Text = CantDatos;
             lblInicio.Text = inicio;
             txtDato.KeyPress += TxtDato_KeyPress;
+            button2.Enabled = false;
         }
 
         private void btnSalir_Click(object sender, EventArgs e)
@@ -93,6 +94,10 @@ namespace Algoritmos_de_ordenamiento
             {
                 // Mostrar un cuadro de diálogo si se ha alcanzado la cantidad máxima de clics
                 MessageBox.Show($"Se ha alcanzado la cantidad máxima de inserciones ({CantDatosActual}).", "Límite alcanzado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            if (clicsBtnInsertar >= CantDatosActual)
+            {
+                button2.Enabled = true;
             }
 
         }

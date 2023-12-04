@@ -15,6 +15,11 @@ namespace Algoritmos_de_ordenamiento
     {
         private string datosSSTF;
         private bool btnAgregarLayout = false;
+        public string PromedioFIFO
+        {
+            get { return lblPROM.Text; }
+            set { lblPROM.Text = value; }
+        }
         public SSTF(string datos, string valorLblInicio2, string valorLblCantDatos, string valorLblCapacidad)
         {
             InitializeComponent();
@@ -42,6 +47,7 @@ namespace Algoritmos_de_ordenamiento
 
         private void btnOUT_Click(object sender, EventArgs e)
         {
+            PromedioFIFO = lblPROM.Text;
             this.Close();
         }
 
@@ -51,31 +57,59 @@ namespace Algoritmos_de_ordenamiento
             {
                 if (!string.IsNullOrEmpty(richTextBoxSSTF.Text))
                 {
-                    string[] lineas = richTextBoxSSTF.Lines;
+                    // Obtener los datos del richTextBoxSSTF y convertirlos a enteros
+                    List<int> datos = richTextBoxSSTF.Lines
+                        .Where(linea => !string.IsNullOrWhiteSpace(linea))
+                        .Select(linea => Convert.ToInt32(linea.Trim()))
+                        .ToList();
 
-                    for (int i = 0; i < lineas.Length; i++)
+                    // Lista para almacenar los datos ordenados según el algoritmo SSTF
+                    List<int> datosOrdenados = new List<int>();
+
+                    // Valor inicial es el valor en lbldatosant
+                    int valorActual = Convert.ToInt32(lbldatosant.Text);
+
+                    // Copiar el valor actual antes de ordenar los datos
+                    int valorInicial = valorActual;
+
+                    // Mientras haya datos por procesar
+                    while (datos.Count > 0)
                     {
-                        if (!string.IsNullOrWhiteSpace(lineas[i]))
+                        // Ordenar los datos restantes por distancia al valor actual
+                        datos.Sort((a, b) => Math.Abs(a - valorActual).CompareTo(Math.Abs(b - valorActual)));
+
+                        // Tomar el dato más cercano y agregarlo a la lista ordenada
+                        int siguienteDato = datos[0];
+                        datosOrdenados.Add(siguienteDato);
+
+                        // Actualizar el valor actual al dato recién seleccionado
+                        valorActual = siguienteDato;
+
+                        // Quitar el dato seleccionado de la lista de datos restantes
+                        datos.Remove(siguienteDato);
+                    }
+
+                    // Limpiar la tabla antes de agregar los nuevos datos
+                    tbl_SSTF.Rows.Clear();
+
+                    // Agregar los datos ordenados a la tabla
+                    for (int i = 0; i < datosOrdenados.Count; i++)
+                    {
+                        int dato = datosOrdenados[i];
+                        int diferencia;
+
+                        if (i == 0)
                         {
-                            tbl_SSTF.Rows.Add(lineas[i].Trim());
-
-                            if (i == 0)
-                            {
-                                int valorAnterior = Convert.ToInt32(lbldatosant.Text);
-                                int valorActual = Convert.ToInt32(lineas[i].Trim());
-                                int diferencia = Math.Abs(valorActual - valorAnterior);
-
-                                tbl_SSTF.Rows[i].Cells[1].Value = diferencia.ToString();
-                            }
-                            else if (i > 0)
-                            {
-                                int valorAnterior = Convert.ToInt32(tbl_SSTF.Rows[i - 1].Cells[0].Value);
-                                int valorActual = Convert.ToInt32(lineas[i].Trim());
-                                int diferencia = Math.Abs(valorActual - valorAnterior);
-
-                                tbl_SSTF.Rows[i].Cells[1].Value = diferencia.ToString();
-                            }
+                            // Para la primera fila, calcula la diferencia absoluta entre valorInicial y el primer dato
+                            diferencia = Math.Abs(valorInicial - dato);
                         }
+                        else
+                        {
+                            // Para las filas siguientes, calcula la diferencia absoluta entre el dato actual y el dato anterior
+                            diferencia = Math.Abs(datosOrdenados[i - 1] - dato);
+                        }
+
+                        tbl_SSTF.Rows.Add(dato, diferencia.ToString());
                     }
 
                     ConfigurarZedGraph();
@@ -128,7 +162,7 @@ namespace Algoritmos_de_ordenamiento
             zedG_SSTF.GraphPane.CurveList.Clear();
 
             // Configurar título y ejes
-            zedG_SSTF.GraphPane.Title.Text = "ORDENAMIENTO FIFO";
+            zedG_SSTF.GraphPane.Title.Text = "ORDENAMIENTO SSTF";
             zedG_SSTF.GraphPane.XAxis.Title.Text = "PASOS";
             zedG_SSTF.GraphPane.YAxis.Title.Text = "Posicion del cabezal";
 
@@ -162,7 +196,7 @@ namespace Algoritmos_de_ordenamiento
             }
 
             // Crear una curva para los puntos y agregarla al ZedGraph
-            LineItem myCurve = zedG_SSTF.GraphPane.AddCurve("FIFO", pointList, Color.Blue, SymbolType.Circle);
+            LineItem myCurve = zedG_SSTF.GraphPane.AddCurve("SSTF", pointList, Color.Blue, SymbolType.Circle);
 
             // Personalizar la apariencia de los puntos
             myCurve.Symbol.Fill = new Fill(Color.Blue);

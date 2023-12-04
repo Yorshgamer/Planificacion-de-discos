@@ -43,11 +43,19 @@
             this.lblCantDatos = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.lblCapi = new System.Windows.Forms.Label();
+            this.lblFIFOPROM = new System.Windows.Forms.Label();
+            this.lblSSTFPROM = new System.Windows.Forms.Label();
+            this.lblSCANPROM = new System.Windows.Forms.Label();
+            this.lblCSCANPROM = new System.Windows.Forms.Label();
+            this.lblLOOKPROM = new System.Windows.Forms.Label();
+            this.lblCLOOKPROM = new System.Windows.Forms.Label();
+            this.btnMejor = new System.Windows.Forms.Button();
+            this.lblMEJOR = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(82, 468);
+            this.button1.Location = new System.Drawing.Point(40, 564);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(117, 39);
             this.button1.TabIndex = 0;
@@ -93,7 +101,7 @@
             // 
             // btnSSTF
             // 
-            this.btnSSTF.Location = new System.Drawing.Point(253, 200);
+            this.btnSSTF.Location = new System.Drawing.Point(263, 211);
             this.btnSSTF.Name = "btnSSTF";
             this.btnSSTF.Size = new System.Drawing.Size(126, 67);
             this.btnSSTF.TabIndex = 8;
@@ -103,7 +111,7 @@
             // 
             // btnScan
             // 
-            this.btnScan.Location = new System.Drawing.Point(445, 200);
+            this.btnScan.Location = new System.Drawing.Point(455, 211);
             this.btnScan.Name = "btnScan";
             this.btnScan.Size = new System.Drawing.Size(126, 67);
             this.btnScan.TabIndex = 9;
@@ -113,7 +121,7 @@
             // 
             // btnCSCAN
             // 
-            this.btnCSCAN.Location = new System.Drawing.Point(82, 307);
+            this.btnCSCAN.Location = new System.Drawing.Point(92, 355);
             this.btnCSCAN.Name = "btnCSCAN";
             this.btnCSCAN.Size = new System.Drawing.Size(127, 67);
             this.btnCSCAN.TabIndex = 10;
@@ -123,7 +131,7 @@
             // 
             // btnLOOK
             // 
-            this.btnLOOK.Location = new System.Drawing.Point(253, 308);
+            this.btnLOOK.Location = new System.Drawing.Point(263, 356);
             this.btnLOOK.Name = "btnLOOK";
             this.btnLOOK.Size = new System.Drawing.Size(126, 66);
             this.btnLOOK.TabIndex = 11;
@@ -133,7 +141,7 @@
             // 
             // btnCLOOK
             // 
-            this.btnCLOOK.Location = new System.Drawing.Point(445, 308);
+            this.btnCLOOK.Location = new System.Drawing.Point(455, 356);
             this.btnCLOOK.Name = "btnCLOOK";
             this.btnCLOOK.Size = new System.Drawing.Size(126, 66);
             this.btnCLOOK.TabIndex = 12;
@@ -143,7 +151,7 @@
             // 
             // btnFIFO
             // 
-            this.btnFIFO.Location = new System.Drawing.Point(83, 200);
+            this.btnFIFO.Location = new System.Drawing.Point(93, 211);
             this.btnFIFO.Name = "btnFIFO";
             this.btnFIFO.Size = new System.Drawing.Size(126, 66);
             this.btnFIFO.TabIndex = 13;
@@ -187,11 +195,85 @@
             this.lblCapi.TabIndex = 17;
             this.lblCapi.Text = "label5";
             // 
+            // lblFIFOPROM
+            // 
+            this.lblFIFOPROM.AutoSize = true;
+            this.lblFIFOPROM.Location = new System.Drawing.Point(102, 192);
+            this.lblFIFOPROM.Name = "lblFIFOPROM";
+            this.lblFIFOPROM.Size = new System.Drawing.Size(0, 16);
+            this.lblFIFOPROM.TabIndex = 18;
+            // 
+            // lblSSTFPROM
+            // 
+            this.lblSSTFPROM.AutoSize = true;
+            this.lblSSTFPROM.Location = new System.Drawing.Point(265, 192);
+            this.lblSSTFPROM.Name = "lblSSTFPROM";
+            this.lblSSTFPROM.Size = new System.Drawing.Size(0, 16);
+            this.lblSSTFPROM.TabIndex = 19;
+            // 
+            // lblSCANPROM
+            // 
+            this.lblSCANPROM.AutoSize = true;
+            this.lblSCANPROM.Location = new System.Drawing.Point(452, 192);
+            this.lblSCANPROM.Name = "lblSCANPROM";
+            this.lblSCANPROM.Size = new System.Drawing.Size(0, 16);
+            this.lblSCANPROM.TabIndex = 20;
+            // 
+            // lblCSCANPROM
+            // 
+            this.lblCSCANPROM.AutoSize = true;
+            this.lblCSCANPROM.Location = new System.Drawing.Point(102, 336);
+            this.lblCSCANPROM.Name = "lblCSCANPROM";
+            this.lblCSCANPROM.Size = new System.Drawing.Size(0, 16);
+            this.lblCSCANPROM.TabIndex = 21;
+            // 
+            // lblLOOKPROM
+            // 
+            this.lblLOOKPROM.AutoSize = true;
+            this.lblLOOKPROM.Location = new System.Drawing.Point(265, 337);
+            this.lblLOOKPROM.Name = "lblLOOKPROM";
+            this.lblLOOKPROM.Size = new System.Drawing.Size(0, 16);
+            this.lblLOOKPROM.TabIndex = 22;
+            // 
+            // lblCLOOKPROM
+            // 
+            this.lblCLOOKPROM.AutoSize = true;
+            this.lblCLOOKPROM.Location = new System.Drawing.Point(464, 337);
+            this.lblCLOOKPROM.Name = "lblCLOOKPROM";
+            this.lblCLOOKPROM.Size = new System.Drawing.Size(0, 16);
+            this.lblCLOOKPROM.TabIndex = 23;
+            // 
+            // btnMejor
+            // 
+            this.btnMejor.Location = new System.Drawing.Point(12, 442);
+            this.btnMejor.Name = "btnMejor";
+            this.btnMejor.Size = new System.Drawing.Size(187, 84);
+            this.btnMejor.TabIndex = 24;
+            this.btnMejor.Text = "MEJOR PLANIFICACIÓN";
+            this.btnMejor.UseVisualStyleBackColor = true;
+            this.btnMejor.Click += new System.EventHandler(this.btnMejor_Click_1);
+            // 
+            // lblMEJOR
+            // 
+            this.lblMEJOR.AutoSize = true;
+            this.lblMEJOR.Location = new System.Drawing.Point(219, 476);
+            this.lblMEJOR.Name = "lblMEJOR";
+            this.lblMEJOR.Size = new System.Drawing.Size(0, 16);
+            this.lblMEJOR.TabIndex = 25;
+            // 
             // OrdenSelec
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(711, 549);
+            this.ClientSize = new System.Drawing.Size(711, 631);
+            this.Controls.Add(this.lblMEJOR);
+            this.Controls.Add(this.btnMejor);
+            this.Controls.Add(this.lblCLOOKPROM);
+            this.Controls.Add(this.lblLOOKPROM);
+            this.Controls.Add(this.lblCSCANPROM);
+            this.Controls.Add(this.lblSCANPROM);
+            this.Controls.Add(this.lblSSTFPROM);
+            this.Controls.Add(this.lblFIFOPROM);
             this.Controls.Add(this.lblCapi);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.lblCantDatos);
@@ -231,5 +313,13 @@
         private System.Windows.Forms.Label lblCantDatos;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblCapi;
+        private System.Windows.Forms.Label lblFIFOPROM;
+        private System.Windows.Forms.Label lblSSTFPROM;
+        private System.Windows.Forms.Label lblSCANPROM;
+        private System.Windows.Forms.Label lblCSCANPROM;
+        private System.Windows.Forms.Label lblLOOKPROM;
+        private System.Windows.Forms.Label lblCLOOKPROM;
+        private System.Windows.Forms.Button btnMejor;
+        private System.Windows.Forms.Label lblMEJOR;
     }
 }
